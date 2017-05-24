@@ -31,7 +31,7 @@ export class DOMComponent {
 }
 
 const instantiateComponent = (element) => {
-
+  return element.type ? new DOMComponent(element) : new MountableString(element);
 };
 
 /*
