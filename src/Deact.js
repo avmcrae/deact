@@ -40,10 +40,24 @@ export class CompositeComponent {
   constructor(element) {
     this.currentElement = element;
   }
-  mount() {
 
+  mount() {
+    const {props, type} = this.currentElement;
+
+    let renderedElement;
+    if (isClass(type)) {
+      const element = new type(props);
+      if (element.componentWillMount) {
+        element.componentWillMount();
+      }
+      renderedElement = element.render();
+    } else {
+      renderedElement = type(props);
+    }
+
+    return instantiateComponent(renderedElement).mount();
   }
-};
+}
 
 const instantiateComponent = (element) => {
   if(typeof element.type === 'string') return new DOMComponent(element);
